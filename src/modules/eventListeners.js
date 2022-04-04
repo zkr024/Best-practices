@@ -8,18 +8,18 @@ const tasks = new Tasks();
 export const newActivity = addListContainer.addEventListener('submit', (e) => {
   e.preventDefault();
   const newValue = document.querySelector('#addList').value;
-    if (newValue === '') {
-      warning.innerHTML = 'Please enter a task';
-      warning.classList.remove('hide');
-      setTimeout(() => {
-        warning.innerHTML = '';
-        warning.classList.add('hide');
-      }, 2000);
-    } else {
-      tasks.addRecord(newValue, false, tasks.activities.length + 1);
-      tasks.local();
-      addListContainer.reset();
-    }
+  if (newValue === '') {
+    warning.innerHTML = 'Please enter a task';
+    warning.classList.remove('hide');
+    setTimeout(() => {
+      warning.innerHTML = '';
+      warning.classList.add('hide');
+    }, 2000);
+  } else {
+    tasks.addRecord(newValue, false, tasks.activities.length + 1);
+    tasks.local();
+    addListContainer.reset();
+  }
 });
 
 export const deleteActivity = list.addEventListener('click', (e) => {
@@ -49,9 +49,8 @@ export const editActivity = list.addEventListener('keyup', (e) => {
 export const completed = list.addEventListener('click', (e) => {
   if (e.target && e.target.tagName === 'INPUT') {
     let status = e.target.parentNode.attributes.completed.value;
-    let position = e.target.parentNode.attributes[2].value;
-    let data = e.target.parentNode.childNodes[3].innerHTML;
-    
+    const position = e.target.parentNode.attributes[2].value;
+    const data = e.target.parentNode.childNodes[3].innerHTML;
     if (e.target.checked) {
       status = true;
       e.target.parentNode.classList.toggle('decoration');
