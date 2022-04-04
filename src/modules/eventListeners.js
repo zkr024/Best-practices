@@ -5,9 +5,10 @@ import Tasks from './class.js';
 
 const tasks = new Tasks();
 
-export const newActivity = addListContainer.addEventListener('keyup', (e) => {
-  if (e.keyCode === 13) {
-    if (e.target.value === '') {
+export const newActivity = addListContainer.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const newValue = document.querySelector('#addList').value;
+    if (newValue === '') {
       warning.innerHTML = 'Please enter a task';
       warning.classList.remove('hide');
       setTimeout(() => {
@@ -15,12 +16,10 @@ export const newActivity = addListContainer.addEventListener('keyup', (e) => {
         warning.classList.add('hide');
       }, 2000);
     } else {
-      const newValue = e.target.value;
       tasks.addRecord(newValue, false, tasks.activities.length + 1);
       tasks.local();
-      e.target.value = '';
+      addListContainer.reset();
     }
-  }
 });
 
 export const deleteActivity = list.addEventListener('click', (e) => {
@@ -34,13 +33,13 @@ export const deleteActivity = list.addEventListener('click', (e) => {
 });
 
 export const preventEnter = list.addEventListener('keydown', (e) => {
-  if (e.keyCode === 13) {
+  if (e.key === 'Enter') {
     e.preventDefault();
   }
 });
 
 export const editActivity = list.addEventListener('keyup', (e) => {
-  if (e.keyCode === 13) {
+  if (e.key === 'Enter') {
     const newValue = e.target.innerHTML;
     const position = e.path[1].attributes[2].value;
     tasks.replace(newValue, position);
@@ -49,23 +48,17 @@ export const editActivity = list.addEventListener('keyup', (e) => {
 
 export const completed = list.addEventListener('click', (e) => {
   if (e.target && e.target.tagName === 'INPUT') {
-    let status;
-    let position;
-    let data;
-
+    let status = e.target.parentNode.attributes.completed.value;
+    let position = e.target.parentNode.attributes[2].value;
+    let data = e.target.parentNode.childNodes[3].innerHTML;
+    
     if (e.target.checked) {
-      status = e.target.parentNode.attributes.completed.value;
       status = true;
-      data = e.target.parentNode.childNodes[3].innerHTML;
-      position = e.target.parentNode.attributes[2].value;
       e.target.parentNode.classList.toggle('decoration');
       tasks.activitiesDone.push(data);
       tasks.checkMark(data, status, position);
     } else {
-      status = e.target.parentNode.attributes.completed.value;
       status = false;
-      data = e.target.parentNode.childNodes[3].innerHTML;
-      position = e.target.parentNode.attributes[2].value;
       e.target.parentNode.classList.toggle('decoration');
       tasks.removeTemp(data);
       tasks.checkMark(data, status, position);

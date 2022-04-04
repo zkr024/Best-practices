@@ -46,6 +46,11 @@ section {
   outline: none;
 }
 
+.anotherActivity {
+  border: none;
+  background-color: transparent;
+}
+
 .add {
   font-size: 15px;
   color: #555;
